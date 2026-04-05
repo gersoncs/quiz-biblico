@@ -1,0 +1,562 @@
+:root {
+    --f-titulo: 2.2rem;
+    --f-pregunta: 1.5rem;
+    --f-opciones: 1rem;
+    --f-marcador: 1rem;
+
+    --blanco-vidrio: rgba(255, 255, 255, 0.08);
+    --borde-vidrio: rgba(255, 255, 255, 0.18);
+
+    --dorado: #f5c76a;
+    --verde-exito: #5fa97a;
+    --rojo-error: #fb7185;
+
+    /* DEFAULT */
+    --color-principal: #3b82f6;   /* azul */
+    --color-oscuro: #0b1a3a;
+    --color-fondo: #060c1a;
+}
+
+/* =========================
+   FÁCIL → AZUL
+========================= */
+body[data-tema="facil"] {
+    --color-principal: #3b82f6;
+    --color-oscuro: #0b1a3a;
+    --color-fondo: #060c1a;
+}
+
+/* =========================
+   INTERMEDIO → MORADO
+========================= */
+body[data-tema="intermedio"] {
+    --color-principal: #8b5cf6;
+    --color-oscuro: #1e0a3c;
+    --color-fondo: #140826;
+}
+
+/* =========================
+   DIFÍCIL → ROJO
+========================= */
+body[data-tema="dificil"] {
+    --color-principal: #ef4444;
+    --color-oscuro: #3a0b0b;
+    --color-fondo: #1a0606;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--color-oscuro), var(--color-fondo));
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+/* --- FONDO ANIMADO (Tus cuadros rotatorios) --- */
+.capa-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 20%, var(--color-principal) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, var(--color-oscuro) 0%, transparent 40%);
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.rotating-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.rotating-box li {
+    position: absolute;
+    list-style: none;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 18%;
+    background-color: rgba(255,255,255,0.10);
+    bottom: -160px;
+    -webkit-animation: square 25s infinite linear;
+    animation: square 25s infinite linear;
+}
+
+.rotating-box li:nth-child(1) { left: 10%; }
+.rotating-box li:nth-child(2) { left: 20%; width: 80px; height: 80px; animation-delay: 2s; animation-duration: 17s; }
+.rotating-box li:nth-child(3) { left: 25%; animation-delay: 4s; }
+.rotating-box li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-duration: 22s; background-color: rgba(255,255,255,0.25); }
+.rotating-box li:nth-child(5) { left: 70%; }
+.rotating-box li:nth-child(6) { left: 80%; width: 100px; height: 100px; animation-delay: 3s; background-color: rgba(255,255,255,0.2); }
+.rotating-box li:nth-child(7) { left: 32%; width: 80px; height: 80px; animation-delay: 7s; }
+.rotating-box li:nth-child(8) { left: 55%; width: 20px; height: 20px; animation-delay: 15s; animation-duration: 40s; }
+.rotating-box li:nth-child(9) { left: 25%; width: 10px; height: 10px; animation-delay: 2s; animation-duration: 40s; background-color: rgba(255,255,255,0.3); }
+.rotating-box li:nth-child(10) { left: 90%; width: 80px; height: 80px; animation-delay: 11s; }
+
+@keyframes square {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(600deg); opacity: 0; }
+}
+
+/* --- TARJETA PRINCIPAL --- */
+.contenedor-principal {
+    width: 95%;
+    max-width: 750px;
+    z-index: 1;
+}
+
+.tarjeta-vidrio {
+    background: var(--blanco-vidrio);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--borde-vidrio);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: relative; /* Necesario para el efecto glitch */
+}
+
+.oculto {
+    display: none !important;
+}
+
+h1 {
+    font-size: var(--f-titulo);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin: 0 0 10px 0;
+    background: linear-gradient(to right, #fff, var(--color-principal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+}
+
+.subtitulo {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+/* --- CABECERA Y MARCADOR --- */
+.info-superior {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.badge-info {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--borde-vidrio);
+    font-size: 0.95rem;
+    color: var(--dorado);
+    font-weight: bold;
+}
+
+.marcador-leaderboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.bloque-equipo {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px 18px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    border: 2px solid transparent;
+    transition: 0.4s;
+    font-size: var(--f-marcador);
+}
+
+/* EFECTO 4: Borde Animado de Neón (Turno Activo) */
+.bloque-equipo.activo {
+    border-color: var(--color-principal);
+    background: rgba(251, 207, 69, 0.1);
+    animation: borde-neon 1.5s infinite alternate;
+}
+
+@keyframes borde-neon {
+    0% { box-shadow: 0 0 5px var(--color-principal), inset 0 0 5px var(--color-principal); }
+    100% { box-shadow: 0 0 20px var(--color-principal), inset 0 0 10px var(--color-principal); }
+}
+
+.bloque-equipo.eliminado {
+    opacity: 0.15;
+    filter: grayscale(1);
+    transform: scale(0.95);
+}
+
+.posicion {
+    background: var(--color-principal);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-right: 12px;
+    font-size: 0.85rem;
+    color: white;
+}
+
+.puntos {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--dorado);
+    margin-left: auto;
+}
+
+/* --- RELOJ Y LATIDO --- */
+.contenedor-timer {
+    position: relative;
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 25px;
+}
+
+.timer-svg {
+    transform: rotate(-90deg);
+}
+
+.timer-fondo {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 8;
+}
+
+.timer-barra {
+    fill: none;
+    stroke: var(--color-principal);
+    stroke-width: 8;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+}
+
+#timer-texto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 900;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+/* EFECTO 3: Tensión en el reloj (Latido) */
+.latido-urgente #timer-texto {
+    color: var(--rojo-error);
+    animation: latido 0.8s infinite;
+}
+
+.latido-urgente .timer-barra {
+    stroke: var(--rojo-error) !important;
+}
+
+@keyframes latido {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.3); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* --- PREGUNTA --- */
+.indicador-turno {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+}
+
+#texto-pregunta {
+    font-size: var(--f-pregunta);
+    margin-bottom: 25px;
+    min-height: 60px;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+/* EFECTO 2: Máquina de Escribir */
+.escribiendo {
+    overflow: hidden;
+    white-space: pre-wrap; /* Permite saltos de línea */
+    animation: typewriter 0.5s steps(40, end);
+}
+
+@keyframes typewriter {
+    from { width: 0; opacity: 0; }
+    to { width: 100%; opacity: 1; }
+}
+
+/* --- RESPUESTAS Y BOTONES --- */
+.rejilla-opciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* EFECTO 1 y 6: Botones Táctiles 3D y Hover Magnético */
+.opcion-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--borde-vidrio);
+    padding: 18px;
+    border-radius: 15px;
+    color: white;
+    cursor: pointer;
+    font-size: var(--f-opciones);
+    transition: all 0.2s ease;
+    /* Efecto 3D Base */
+    box-shadow: 0 5px 0 rgba(0,0,0,0.4); 
+    transform: translateY(0);
+}
+
+.opcion-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    /* Efecto Magnético 3D (sutil) */
+    transform: perspective(500px) rotateX(5deg) translateY(-2px);
+    box-shadow: 0 7px 15px rgba(0,0,0,0.5), 0 5px 0 rgba(0,0,0,0.4);
+}
+
+.opcion-btn:active:not(:disabled) {
+    /* El botón se "hunde" al hacer clic */
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+
+.opcion-btn.correcta-reveal {
+    background: var(--verde-exito) !important;
+    border-color: #fff !important;
+    font-weight: bold;
+    box-shadow: 0 0 15px var(--verde-exito), 0 5px 0 rgba(0,0,0,0.5) !important;
+}
+
+.opcion-btn.incorrecta-reveal {
+    background: var(--rojo-error) !important;
+    border-color: #fff !important;
+    opacity: 1 !important;
+    box-shadow: 0 0 10px var(--rojo-error), 0 5px 0 rgba(0,0,0,0.5) !important;
+}
+
+/* Aplicamos el Efecto 3D también a los demás botones */
+.btn-principal {
+    background: var(--color-principal);
+    color: white;
+    border: none;
+    padding: 18px 35px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.5), 0 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-principal:active {
+    transform: translateY(6px);
+    box-shadow: 0 0px 0 rgba(0,0,0,0.5), 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-accion {
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    border: 1px solid var(--borde-vidrio);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    flex: 1;
+    transition: all 0.2s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+}
+
+.btn-accion:hover:not(:disabled) {
+    background: white;
+    color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.4);
+}
+
+.btn-accion:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0,0,0,0.4);
+}
+
+.btn-continuar {
+    background: #fff;
+    color: #000;
+    border: none;
+    width: 100%;
+    flex: none;
+    padding: 15px;
+}
+
+.btn-accion:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    transform: none;
+}
+
+.controles-extra {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.botones-fila {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+/* --- REGISTRO Y MODOS --- */
+.grupo-registro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-equipo {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--borde-vidrio);
+    border-radius: 12px;
+    padding: 14px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-equipo:focus {
+    border-color: var(--color-principal);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.ajustes-juego {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0 30px 0;
+}
+
+.btn-modo {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    opacity: 0.4;
+    filter: grayscale(1);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.3); /* Botón 3D para modos */
+}
+
+.btn-modo:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.btn-modo.activo {
+    filter: grayscale(0);
+    opacity: 1;
+    border-color: var(--color-principal);
+    background: rgba(218, 24, 51, 0.5);
+    box-shadow: 0 0 20px var(--color-principal);
+}
+
+.icono-modo { font-size: 1.8rem; }
+.texto-modo { display: flex; flex-direction: column; text-align: left; }
+.titulo-modo { font-weight: 900; font-size: 0.85rem; color: white; }
+.sub-modo { font-size: 0.65rem; color: rgba(255, 255, 255, 0.7); }
+
+/* --- EFECTOS DE ACIERTO Y ERROR (Flash y Glitch) --- */
+.flash-correcto {
+    animation: flash-v 0.8s ease;
+}
+
+.flash-incorrecto {
+    /* EFECTO 5: Glitch al fallar */
+    animation: flash-r 0.8s ease, glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both;
+}
+
+@keyframes flash-v {
+    50% { box-shadow: 0 0 60px var(--verde-exito); border-color: var(--verde-exito); }
+}
+
+@keyframes flash-r {
+    50% { box-shadow: 0 0 60px var(--rojo-error); border-color: var(--rojo-error); }
+}
+
+@keyframes glitch-anim {
+    0% { transform: translate(0) }
+    20% { transform: translate(-5px, 5px) }
+    40% { transform: translate(-5px, -5px) }
+    60% { transform: translate(5px, 5px) }
+    80% { transform: translate(5px, -5px) }
+    100% { transform: translate(0) }
+}
+
+.resultado-destacado {
+    font-size: 1.8rem;
+    margin: 30px 0;
+    color: var(--dorado);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+@media (max-width: 600px) {
+    .grupo-registro,
+    .rejilla-opciones,
+    .marcador-leaderboard {
+        grid-template-columns: 1fr;
+    }
+
+    .info-superior {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+}
+.creditos {
+    position: fixed; 
+    bottom: 15px;
+    left: 0;
+    width: 100%;   
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    letter-spacing: 2px;
+    z-index: 100;   
+    pointer-events: auto;
+    transition: all 0.3s ease;
+}
+
+.creditos:hover {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 10px var(--color-principal);
+    bottom: 18px; /* Un pequeño salto */
+}

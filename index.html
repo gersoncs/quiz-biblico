@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Bíblico by PartiturasHimnario</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="capa-fondo">
+        <ul class='rotating-box'>
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+    
+    <div class="contenedor-principal">
+        <div id="pantalla-registro" class="tarjeta-vidrio">
+            <h1>Quiz Bíblico</h1>
+            <p class="subtitulo">Escribe el nombre de los equipos (Mínimo 2 jugadores)</p>
+            <div class="grupo-registro">
+                <input type="text" class="input-equipo" placeholder="Equipo 1" maxlength="12">
+                <input type="text" class="input-equipo" placeholder="Equipo 2" maxlength="12">
+                <input type="text" class="input-equipo" placeholder="Equipo 3" maxlength="12">
+                <input type="text" class="input-equipo" placeholder="Equipo 4" maxlength="12">
+            </div>
+
+            <div class="ajustes-juego">
+                <div id="btn-modo-turbo" class="btn-modo" onclick="alternarModo('turbo')">
+                    <div class="icono-modo">⚡</div>
+                    <div class="texto-modo">
+                        <span class="titulo-modo">MODO TURBO</span>
+                        <span class="sub-modo" id="txt-turbo">ESTÁNDAR (Manual)</span>
+                    </div>
+                </div>
+                <div id="btn-modo-supervivencia" class="btn-modo" onclick="alternarModo('supervivencia')">
+                    <div class="icono-modo">🛡️</div>
+                    <div class="texto-modo">
+                        <span class="titulo-modo">SUPERVIVENCIA</span>
+                        <span class="sub-modo" id="txt-super">DESACTIVADO</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-principal" onclick="iniciarJuego()">INICIAR</button>
+        </div>
+
+        <div id="pantalla-juego" class="tarjeta-vidrio oculto">
+            <div class="info-superior">
+                <div id="modo-display" class="badge-info">Modo: Estándar</div>
+                <div id="nivel-display" class="badge-info">Nivel: Fácil</div>
+                <div id="progreso-display" class="badge-info">Pregunta 1/45</div>
+            </div>
+
+            <div id="marcador-dinamico" class="marcador-leaderboard"></div>
+
+            <div class="contenedor-timer">
+                <svg class="timer-svg" viewBox="0 0 100 100">
+                    <circle class="timer-fondo" cx="50" cy="50" r="45"></circle>
+                    <circle id="timer-progreso" class="timer-barra" cx="50" cy="50" r="45"></circle>
+                </svg>
+                <div id="timer-texto">23</div>
+            </div>
+
+            <div class="area-pregunta">
+                <div class="indicador-turno">Turno de: <span id="turno-nombre">---</span></div>
+                <h2 id="texto-pregunta">...</h2>
+                <div id="opciones-lista" class="rejilla-opciones"></div>
+            </div>
+
+            <div class="controles-extra">
+                <div class="botones-fila">
+                    <button id="btn-subir-nivel" class="btn-accion" onclick="saltarNivel()">⬆ SUBIR NIVEL</button>
+                    <button class="btn-accion" onclick="reiniciarTodo()"> REINICIAR</button>
+                </div>
+                <button id="btn-siguiente" class="btn-accion btn-continuar" onclick="siguienteManual()" disabled>CONTINUAR DESAFÍO</button>
+            </div>
+        </div>
+
+        <div id="pantalla-final" class="tarjeta-vidrio oculto">
+            <h1>¡Juego Terminado!</h1>
+            <div id="anuncio-ganador" class="resultado-destacado"></div>
+            <button class="btn-principal" onclick="reiniciarTodo()">NUEVA PARTIDA</button>
+        </div>        
+    </div>
+
+    <audio id="snd-acierto" src="acierto.mp3" preload="auto"></audio>
+    <audio id="snd-error" src="error.mp3" preload="auto"></audio>
+    <audio id="snd-final" src="final.mp3" preload="auto"></audio>
+    <audio id="snd-fondo" src="menu.mp3" loop preload="auto"></audio>
+
+    <script src="preguntas.js"></script>
+    <script src="logica.js"></script>
+</body>
+</html>
